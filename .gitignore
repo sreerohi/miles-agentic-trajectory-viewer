@@ -1,0 +1,10 @@
+# Generated timeline data (produced by build_timeline_data.py)
+timeline_metrics.json
+per_step_trials.json
+trial_phase_stats.json
+timeline_source.json
+traj/
+
+# Python
+__pycache__/
+*.pyc
