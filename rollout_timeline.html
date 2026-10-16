@@ -308,7 +308,8 @@ function openTrajectory(tr) {
     .then(data => renderTrajectory(body, data, tr))
     .catch(() => {
       body.innerHTML = `<p style='color:#ef4444'>Trajectory file not found at <code>${trajUrl}</code>.<br>
-        Run <code>python build_timeline_data.py --export-trajs</code> to export trajectories alongside the JSON data files.</p>`;
+        Re-run <code>build_timeline_data.py</code> to refresh the <code>traj/</code> symlinks — or this trial
+        has no <code>agent/*.trajectory.json</code> (e.g. cancelled mid-flight).</p>`;
     });
 }
 
