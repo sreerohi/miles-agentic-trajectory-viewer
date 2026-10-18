@@ -344,11 +344,16 @@ def parse_trials(trials_dir: str, gen_by_session: dict | None = None) -> list:
         slow_tests = _parse_verifier_slow_tests(trial_dir)
         # Per-turn tool/LLM timing from trajectory
         timing = _parse_tool_exec_times(trial_dir)
+        # Infra-aborted trial: result.json exists but carries an exception and never
+        # produced an agent/verifier result (e.g. Docker-compose failed to bring the
+        # sandbox up). The group-abort filter drops these and oversamples replacements,
+        # so surface them with the same outline-only treatment as flush-cancelled trials.
+        aborted = bool(r.get("exception_info")) and r.get("agent_result") is None and r.get("verifier_result") is None
         rows.append({
             "st": st_,
             "rollout_id": rid,
             "name": name,
-            "cancelled": False,
+            "cancelled": aborted,
             "reward": reward,
             "turns": _turns(os.path.join(trial_dir, "agent", "trajectory.json")),
             "total": _dur(r.get("started_at"), r.get("finished_at")),
